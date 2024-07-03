@@ -12,7 +12,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 243, 239, 239),
+      backgroundColor: Color.fromARGB(255, 240, 238, 238),
       body: Container(
           margin: EdgeInsets.only(top: 50, left:20),
           child: Column(
@@ -39,12 +39,27 @@ class _HomeState extends State<Home> {
                     ),
                 ],
               ),
+              SizedBox(height: 30.0,),
               Container(
-                width: MediaQuery.of(context).size.width,
-                child: TextField(
-                  decoration: InputDecoration(border: InputBorder.none),
-                ),
-                )
+                padding: EdgeInsets.only(left: 20.0),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    decoration: InputDecoration(border: InputBorder.none, hintText: "Search Product", hintStyle: Appwidget.lightTextFeildStyle(), prefixIcon: Icon(Icons.search, color: Colors.black,)),
+                  ),
+              ),
+              SizedBox(height: 20.0,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Categories", style: Appwidget.semiBoldTextStyle(),
+                  ),
+                  Text(
+                    "See all", style: TextStyle(color: Colors.orange, fontSize: 18, fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
             ],
           )
         ),

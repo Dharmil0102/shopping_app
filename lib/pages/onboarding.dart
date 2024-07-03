@@ -11,7 +11,7 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 243, 239, 239),
+      backgroundColor: Color.fromARGB(255, 240, 238, 238),
       body: Container(
         margin: EdgeInsets.only(top: 50.0),
           child: Column(
