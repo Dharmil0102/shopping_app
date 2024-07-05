@@ -18,9 +18,25 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 240, 238, 238),
-      body: Container(
-        margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+      backgroundColor: Colors.white, // Clean white background
+      appBar: AppBar(
+        title: Text(
+          'My Shop',
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CartPage()),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.blue, // Add a blue app bar
+      ),
+      body: SingleChildScrollView( // Allow scrolling for long content
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,16 +49,17 @@ class _HomeState extends State<Home> {
                   children: [
                     Text(
                       "Hey, Dharmil",
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Darker text for better contrast
+                      ),
                     ),
-                    Text(
-                      "Good Morning",
-                      style: TextStyle(fontSize: 16.0, color: Colors.grey),
-                    ),
+                   
                   ],
                 ),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(50.0), // Circular profile image
                   child: Image.asset(
                     "images/profile.jpg", // Replace with your asset path
                     height: 70,
@@ -56,12 +73,11 @@ class _HomeState extends State<Home> {
 
             // Search bar
             Container(
-              padding: EdgeInsets.only(left: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(10),
               ),
-              width: MediaQuery.of(context).size.width,
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -78,7 +94,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Categories",
+                  'Categories',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
@@ -110,22 +126,44 @@ class _HomeState extends State<Home> {
               ),
             ),
 
-            // All products section
+            // All Products section
             SizedBox(height: 20.0),
-            Text(
-              "All Products",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'All products',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {}, // Add functionality for "See all"
+                  child: Row(
+                    children: [
+                      Text(
+                        "See all",
+                        style: TextStyle(color: Colors.blue, fontSize: 16),
+                      ),
+                      SizedBox(width: 5.0),
+                      Icon(
+                        Icons.arrow_right_rounded,
+                        color: Colors.blue,
+                        size: 18.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 10.0),
 
             // Display products in a grid
             Container(
-              height: 300.0, // Adjust height as needed
               child: GridView.count(
+                shrinkWrap: true, // Wrap GridView content to avoid overflow
                 crossAxisCount: 2, // Two products per row
                 childAspectRatio: 0.7, // Adjust aspect ratio for product display
                 mainAxisSpacing: 10,
-                                crossAxisSpacing: 10.0, // Spacing between products
+                crossAxisSpacing: 10.0, // Spacing between products
                 children: products.map((product) => createProductCard(product)).toList(),
               ),
             ),
@@ -174,19 +212,33 @@ class _HomeState extends State<Home> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[300]!.withOpacity(0.5),
+            blurRadius: 5.0,
+            spreadRadius: 1.0,
+          ),
+        ], // Add subtle shadow for depth
       ),
       child: Column(
         children: [
           // Product image placeholder
           ClipRRect(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
             child: Container(
-              height: 100.0,
+              height: 120.0, // Adjust image height as needed
               width: double.infinity,
-              color: Colors.grey[200], // Placeholder color
-              child: Center(
-                child: Icon(Icons.image, size: 50.0, color: Colors.black26), // Placeholder icon
-              ),
+              child: product.imageUrl.isEmpty
+                  ? Center(
+                      child: Icon(Icons.image, size: 50.0, color: Colors.grey[200]),
+                    )
+                  : Image.network(
+                      product.imageUrl, // Use network image if available
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Center(child: Icon(Icons.error)), // Display error icon
+                    ),
             ),
           ),
           Padding(
@@ -203,7 +255,7 @@ class _HomeState extends State<Home> {
                 // Product price
                 Text(
                   "\$${product.price}",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.blue),
                 ),
                 SizedBox(height: 10.0),
                 // Add to cart button
@@ -222,6 +274,7 @@ class _HomeState extends State<Home> {
                         backgroundColor: Colors.blue,
                         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                       ),
+                    
                     ),
                   ],
                 ),
@@ -243,3 +296,22 @@ class Product {
   Product({required this.name, required this.imageUrl, required this.price});
 }
 
+// Cart Page (assuming a separate class for CartPage)
+class CartPage extends StatelessWidget {
+  // Add logic to manage cart items here (e.g., displaying them, handling removal)
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Shopping Cart'),
+      ),
+      body: Center(
+        child: Text(
+          "Your cart is empty.",
+          style: TextStyle(fontSize: 20.0),
+        ),
+      ),
+    );
+  }
+}
