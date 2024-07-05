@@ -9,60 +9,126 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final List<String> categories = ['Electronics', 'Fashion', 'Home'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 240, 238, 238),
       body: Container(
-          margin: EdgeInsets.only(top: 50, left:20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment:CrossAxisAlignment.start,
+        margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hey, Dharmil",
+                      style: Appwidget.boldTextFeildStyle(),
+                    ),
+                    Text(
+                      "Good Morning",
+                      style: Appwidget.lightTextFeildStyle(),
+                    ),
+                  ],
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    "images/profile.jpg",
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 30.0),
+            Container(
+              padding: EdgeInsets.only(left: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              width: MediaQuery.of(context).size.width,
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Search Product",
+                  hintStyle: Appwidget.lightTextFeildStyle(),
+                  prefixIcon: Icon(Icons.search, color: Colors.black),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Categories",
+                  style: Appwidget.semiBoldTextStyle(),
+                ),
+                TextButton(
+                  onPressed: () {}, // Add functionality for "See all"
+                  child: Row(
                     children: [
                       Text(
-                        "Hey, Dharmil", 
-                        style: Appwidget.boldTextFeildStyle(),
+                        "See all",
+                        style: TextStyle(color: Colors.blue, fontSize: 16),
                       ),
-                      Text(
-                        "Good Morning", style: Appwidget.lightTextFeildStyle(),
-                        ),
+                      SizedBox(width: 5.0),
+                      Icon(
+                        Icons.arrow_right_rounded, // Use built-in Icon for arrow
+                        color: Colors.blue,
+                        size: 18.0,
+                      ),
                     ],
                   ),
-                   ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                      child: Image.asset("images/profile.jpg", height: 70, width: 70,fit: BoxFit.cover,)
-                    ),
-                ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+            // Display categories as tiles
+            Container(
+              height: 100.0,
+              child: ListView.builder( // Use ListView.builder instead of ListView.horizontal
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) => createCategoryTile(categories[index]),
               ),
-              SizedBox(height: 30.0,),
-              Container(
-                padding: EdgeInsets.only(left: 20.0),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                  width: MediaQuery.of(context).size.width,
-                  child: TextField(
-                    decoration: InputDecoration(border: InputBorder.none, hintText: "Search Product", hintStyle: Appwidget.lightTextFeildStyle(), prefixIcon: Icon(Icons.search, color: Colors.black,)),
-                  ),
-              ),
-              SizedBox(height: 20.0,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Categories", style: Appwidget.semiBoldTextStyle(),
-                  ),
-                  Text(
-                    "See all", style: TextStyle(color: Colors.orange, fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-            ],
-          )
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget createCategoryTile(String category) {
+    return Container(
+      margin: EdgeInsets.only(right: 10.0),
+      child: TextButton(
+        onPressed: () {}, // Add functionality for category tile press
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              category,
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+          backgroundColor: Colors.grey[200],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      ),
     );
   }
 }
